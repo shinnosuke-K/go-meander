@@ -1,5 +1,7 @@
 package go_meander
 
+import "strings"
+
 type j struct {
 	Name       string
 	PlaceTypes []string
@@ -26,4 +28,11 @@ var Journeys = []interface{}{
 		Name:       "リラックス",
 		PlaceTypes: []string{"hair_care", "beauty_salon", "cafe", "spa"},
 	},
+}
+
+func (j *j) Public() interface{} {
+	return map[string]interface{}{
+		"name":    j.Name,
+		"journey": strings.Join(j.PlaceTypes, "|"),
+	}
 }
