@@ -14,11 +14,11 @@ import (
 var APIKey string
 
 type Place struct {
-	*googleGeometry `json:"geometry"`
-	Name            string         `json:"name"`
-	Icon            string         `json:"icon"`
-	Photos          []*googlePhoto `json:"photos"`
-	Vicinity        string         `json:"vicinity"`
+	Geometry *googleGeometry `json:"geometry"`
+	Name     string          `json:"name"`
+	Icon     string          `json:"icon"`
+	Photos   []*googlePhoto  `json:"photos"`
+	Vicinity string          `json:"vicinity"`
 }
 
 type googleResponse struct {
@@ -26,7 +26,7 @@ type googleResponse struct {
 }
 
 type googleGeometry struct {
-	*googleLocation `json:"location"`
+	Location *googleLocation `json:"location"`
 }
 
 type googleLocation struct {
@@ -35,7 +35,7 @@ type googleLocation struct {
 }
 
 type googlePhoto struct {
-	PhotoRef string `json:"photo_ref"`
+	PhotoRef string `json:"photo_reference"`
 	URL      string `json:"url"`
 }
 
@@ -45,8 +45,8 @@ func (p *Place) Public() interface{} {
 		"icon":     p.Icon,
 		"photos":   p.Photos,
 		"vicinity": p.Vicinity,
-		"lat":      p.Lat,
-		"lng":      p.Lng,
+		"lat":      p.Geometry.Location.Lat,
+		"lng":      p.Geometry.Location.Lng,
 	}
 }
 
@@ -103,7 +103,7 @@ func (q *Query) Run() []interface{} {
 			for _, result := range response.Results {
 				for _, photo := range result.Photos {
 					photo.URL = "https://maps.googleapis.com/maps/api/place/photo" +
-						"maxwidth=1000&photoreference=" + photo.PhotoRef +
+						"?maxwidth=1000&photoreference=" + photo.PhotoRef +
 						"&key=" + APIKey
 
 				}

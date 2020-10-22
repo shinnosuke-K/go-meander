@@ -20,7 +20,7 @@ func main() {
 	}))
 	http.HandleFunc("/recommendations", cors(func(w http.ResponseWriter, r *http.Request) {
 		q := &meander.Query{
-			Journey: strings.Split(r.URL.Query().Get("lat"), "|"),
+			Journey: strings.Split(r.URL.Query().Get("journeys"), "|"),
 		}
 		q.Lat, _ = strconv.ParseFloat(r.URL.Query().Get("lat"), 64)
 		q.Lng, _ = strconv.ParseFloat(r.URL.Query().Get("lng"), 64)
